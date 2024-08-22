@@ -10,7 +10,8 @@ public class Aplication {
 
     public static void menu(){
         Empleado[] empleados = new Empleado[20];
-        Empleado[] arrayOriginal= Arrays.copyOf(empleados,empleados.length);
+        Empleado[] arrayCopiaEmpleados= Arrays.copyOf(empleados,empleados.length);
+        boolean isFiltrado = false;
         empleados[0] = new Empleado("Carlos Perez Gomez", 30, 2500.00, "IT");
         empleados[1] = new Empleado("Ana Rodriguez Sanchez", 25, 2200.00, "Marketing");
         empleados[2] = new Empleado("Luis Garcia Fernandez", 40, 3500.00, "Ventas");
@@ -34,7 +35,7 @@ public class Aplication {
             System.out.println("5. Incrementar salario de un empleado");
             System.out.println("6. Limpiar filtros");
             System.out.println("7. Salir");
-            System.out.print("Ingrese una opción (1-4): ");
+            System.out.print("Ingrese una opción (1-7): ");
             opcion = scanner.nextInt();
             scanner.nextLine();
             switch (opcion) {
@@ -65,9 +66,9 @@ public class Aplication {
                     }else{
                         System.out.println("El nombre ingresado ya existe. No se puede agregar este empleado");
                     }
+                    arrayCopiaEmpleados= Arrays.copyOf(empleados,empleados.length);
                     break;
                 case 3:
-                    arrayOriginal = Arrays.copyOf(empleados,empleados.length);
                     int opcionFiltro;
                     do {
                         System.out.println("Seleccione el atributo por el cual va filtrar: ");
@@ -82,25 +83,30 @@ public class Aplication {
                         switch (opcionFiltro) {
                             case 1:
                                 String filtroNombre = scanner.nextLine();
-                                mostrarEmpleados(filtrarEmpleados(empleados,filtroNombre,0,0,null));
+                                empleados = Arrays.copyOf(filtrarEmpleados(empleados,filtroNombre,0,0,null), filtrarEmpleados(empleados,filtroNombre,0,0,null).length);
+                                mostrarEmpleados(empleados);
                                 break;
                             case 2:
                                 int filtroEdad = scanner.nextInt();
-                                mostrarEmpleados(filtrarEmpleados(empleados,null,filtroEdad,0,null));
+                                empleados = Arrays.copyOf(filtrarEmpleados(empleados,null,filtroEdad,0,null), filtrarEmpleados(empleados,null,filtroEdad,0,null).length);
+                                mostrarEmpleados(empleados);
                                 break;
                             case 3:
                                 double filtroSalario = scanner.nextDouble();
-                                mostrarEmpleados(filtrarEmpleados(empleados,null,0,filtroSalario,null));
+                                empleados = Arrays.copyOf(filtrarEmpleados(empleados,null,0,filtroSalario,null), filtrarEmpleados(empleados,null,0,filtroSalario,null).length);
+                                mostrarEmpleados(empleados);
                                 break;
                             case 4:
                                 String filtroDepartamento = scanner.nextLine();
-                                mostrarEmpleados(filtrarEmpleados(empleados,null,0,0,filtroDepartamento));
+                                empleados = Arrays.copyOf(filtrarEmpleados(empleados,null,0,0,filtroDepartamento), filtrarEmpleados(empleados,null,0,0,filtroDepartamento).length);
+                                mostrarEmpleados(empleados);
                                 break;
                             default:
                                 System.out.println("La opción ingresada no es válida");
                                 break;
                         }
                     }while(opcionFiltro<=0 || opcionFiltro>4);
+                    isFiltrado = true;
                     break;
                 case 4:
                     int opcionOrden;
@@ -139,9 +145,10 @@ public class Aplication {
                     double porcentaje = scanner.nextDouble();
                     empleados[numeroEmpleado-1]=incrementarSalario(empleados[numeroEmpleado-1],(porcentaje/100));
                     System.out.println("Se actualizó el nuevo salario exitosamente");
+                    arrayCopiaEmpleados= Arrays.copyOf(empleados,empleados.length);
                     break;
                 case 6:
-                    empleados = Arrays.copyOf(arrayOriginal,arrayOriginal.length);
+                    empleados = Arrays.copyOf(arrayCopiaEmpleados,arrayCopiaEmpleados.length);
                     System.out.println("Se eliminaron los filtros correctamente");
                     mostrarEmpleados(empleados);
                     break;
